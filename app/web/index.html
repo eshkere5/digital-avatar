@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Цифровой аватар руководителя</title><link rel="stylesheet" href="/static/app.css"></head>
+<body>
+<aside>
+  <div class="brand"><span class="dot"></span><b>Аватар</b><small>ИИ-помощник руководителя</small></div>
+  <nav id="nav"></nav>
+  <div class="side-foot"><div id="status" class="chips"></div></div>
+</aside>
+<main>
+  <header>
+    <div><h1 id="title"></h1><p id="sub" class="muted"></p></div>
+    <div class="ctl">
+      <label>Руководитель <select id="pid"></select></label>
+      <label>Дата демо <input type="date" id="today"></label>
+      <button class="ghost" id="newprof">+ Руководитель</button>
+    </div>
+  </header>
+  <section id="view"></section>
+</main>
+<div id="toast"></div>
+<script src="/static/app.js"></script>
+</body></html>
