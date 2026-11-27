@@ -90,7 +90,7 @@ def create_app() -> FastAPI:
     @app.middleware("http")
     async def guard(req: Request, nxt):
         host = (req.headers.get("host") or "").split(":")[0]
-        if host not in ("127.0.0.1", "localhost", "testserver"): return PlainTextResponse("forbidden", 403)
+        if host not in ("127.0.0.1", "localhost", "testserver") and not host.endswith(".onrender.com"): return PlainTextResponse("forbidden", 403)
         r = await nxt(req); r.headers["Cache-Control"] = "no-store"; return r
 
     def prof_or_404(pid):
