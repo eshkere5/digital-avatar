@@ -1,0 +1,21 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Syntax check (Python)
+        run: if [ -d app ]; then python -m compileall -q app; fi
+      - name: Syntax check (JS)
+        run: if [ -f app/web/app.js ]; then node --check app/web/app.js; fi
+      - name: Tests
+        run: if [ -d tests ] && [ -d data ]; then python -m unittest discover -s tests; fi

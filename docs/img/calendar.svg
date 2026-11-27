@@ -1,0 +1,14 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 380' font-family='Segoe UI,Arial,sans-serif' font-size='12'>
+<rect width='900' height='380' fill='#fff'/><rect x='0.5' y='0.5' width='899' height='379' fill='none' stroke='#e3e3e0'/>
+<g font-weight='600' fill='#111' text-anchor='middle'><text x='170' y='24'>пн, 07.12</text><text x='340' y='24'>вт, 08.12</text><text x='510' y='24'>ср, 09.12</text><text x='680' y='24'>чт, 10.12</text><text x='850' y='24'>пт, 11.12</text></g>
+<g stroke='#e3e3e0'><line x1='60' y1='36' x2='900' y2='36'/><line x1='85' y1='36' x2='85' y2='380'/><line x1='255' y1='36' x2='255' y2='380'/><line x1='425' y1='36' x2='425' y2='380'/><line x1='595' y1='36' x2='595' y2='380'/><line x1='765' y1='36' x2='765' y2='380'/></g>
+<g fill='#6b6b6b'><text x='30' y='74'>10:00</text><text x='30' y='140'>12:00</text><text x='30' y='206'>14:00</text><text x='30' y='272'>16:00</text></g>
+<g><rect x='90' y='60' width='160' height='26' rx='5' fill='#fdeaea' stroke='#d00000'/><text x='98' y='77' fill='#d00000'>10:00 Планёрка направления</text>
+<rect x='260' y='60' width='160' height='26' rx='5' fill='#fdeaea' stroke='#d00000'/><text x='268' y='77' fill='#d00000'>10:00 Планёрка направления</text>
+<rect x='260' y='190' width='160' height='44' rx='5' fill='#33260f'/><text x='268' y='208' fill='#f0b35a'>14:00 Комитет</text><text x='268' y='224' fill='#f0b35a'>коммерческого директора</text>
+<rect x='430' y='96' width='160' height='84' rx='5' fill='#1f7a45' fill-opacity='.22' stroke='#1f7a45' stroke-opacity='.55'/><rect x='430' y='96' width='4' height='84' fill='#1f7a45'/><text x='442' y='114' fill='#14532d' font-weight='600'>🛡 Стратегия</text>
+<rect x='600' y='250' width='80' height='100' rx='5' fill='#1f7a45' fill-opacity='.22' stroke='#1f7a45' stroke-opacity='.55'/><rect x='600' y='250' width='4' height='100' fill='#1f7a45'/><text x='610' y='268' fill='#14532d' font-weight='600'>🛡 1:1 с</text><text x='610' y='284' fill='#14532d' font-weight='600'>командой</text>
+<rect x='684' y='318' width='78' height='30' rx='5' fill='#33260f'/><text x='690' y='336' fill='#f0b35a'>17:30 КП</text>
+<rect x='770' y='140' width='160' height='40' rx='5' fill='#33260f'/><text x='778' y='158' fill='#f0b35a'>12:00 Встреча с партнёром</text></g>
+<g><rect x='20' y='350' width='12' height='12' fill='#33260f'/><text x='38' y='361' fill='#111'>Нужен руководитель</text><rect x='170' y='350' width='12' height='12' fill='#fdeaea' stroke='#d00000'/><text x='188' y='361' fill='#111'>Берёт аватар</text><rect x='290' y='350' width='12' height='12' fill='#1f7a45' fill-opacity='.35' stroke='#1f7a45'/><text x='308' y='361' fill='#111'>Защищённый блок</text></g>
+</svg>

@@ -1,0 +1,6 @@
+/* Пример палитры: белый фон, красный акцент. Скопируйте значения в :root файла app/web/app.css
+   и удалите блок @media(prefers-color-scheme:dark), чтобы вид не менялся от темы системы. */
+:root{--bg:#fff;--card:#fff;--ink:#111;--mut:#6b6b6b;--line:#e3e3e0;--acc:#d00000;--acc2:#fdeaea;--warn:#f0b35a;--warnbg:#33260f;--bad:#b3261e;--badbg:#fdeceb;--ok:#1d7a3d;--okbg:#e9f6ee;--r:12px}
+/* Защищённый блок календаря: прозрачно-зелёный */
+.ev.block{background:rgba(31,122,69,.22);background-image:none;color:#14532d;font-weight:600;border:1px solid rgba(31,122,69,.55);border-left:4px solid #1f7a45;z-index:1}
+.ev.block *{color:#14532d}

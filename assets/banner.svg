@@ -1,0 +1,9 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 280' role='img' aria-label='Цифровой аватар руководителя'>
+<rect width='1200' height='280' fill='#111'/>
+<rect x='0' y='0' width='14' height='280' fill='#d00000'/>
+<g fill='none' stroke='#d00000' stroke-width='2' opacity='.55'><circle cx='1030' cy='140' r='96'/><circle cx='1030' cy='140' r='62'/><circle cx='1030' cy='140' r='28'/></g>
+<circle cx='1030' cy='140' r='10' fill='#d00000'/>
+<text x='60' y='122' font-family='Segoe UI,Arial,sans-serif' font-size='54' font-weight='700' fill='#fff'>Цифровой аватар</text>
+<text x='60' y='180' font-family='Segoe UI,Arial,sans-serif' font-size='30' fill='#f0b35a'>ИИ-помощник руководителя онлайн-продаж</text>
+<text x='60' y='228' font-family='Segoe UI,Arial,sans-serif' font-size='20' fill='#bdbdbd'>План дня · Почта · Встречи · Протоколы · Защита времени</text>
+</svg>

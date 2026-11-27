@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.idea/
+.vscode/
+# секреты и состояние приложения: не коммитить
+data/secrets.json
+data/modes.json
+data/stt.json
+data/tg_bot.json
+data/state/
+data/outbox/
+data/live/
+data/profiles/
