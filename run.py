@@ -1,4 +1,7 @@
+import os
 import uvicorn
+
 if __name__ == "__main__":
-    print("Digital Avatar: http://127.0.0.1:8000")
-    uvicorn.run("app.server:app", host="127.0.0.1", port=8000)
+    host, port = os.getenv("HOST", "127.0.0.1"), int(os.getenv("PORT", "8000"))
+    print(f"Digital Avatar: http://{host}:{port}")
+    uvicorn.run("app.main:app", host=host, port=port)
