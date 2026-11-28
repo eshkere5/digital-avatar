@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сцена аватара</title>
+<style>
+:root{--acc:#d00000;--ink:#16171a;--mut:#6a6e76;--card:#fff;--line:#e8e6e1}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{font:15px/1.5 Inter,"Segoe UI",system-ui,sans-serif;color:var(--ink);overflow:hidden;background:#111}
+.frame{position:fixed;inset:0;display:grid;place-items:center}
+.stage{position:relative;width:100%;height:100%;overflow:hidden;display:grid;place-items:center;transition:background .4s}
+.stage.fixed{width:var(--w);height:var(--h);max-width:100%;max-height:100%;aspect-ratio:16/9}
+[data-bg=light] .stage{background:radial-gradient(1200px 700px at 50% 30%,#fff,#f3f1ed)}
+[data-bg=dark] .stage{background:radial-gradient(1200px 700px at 50% 30%,#23252b,#0c0d0f);color:#f2f2f4}
+[data-bg=green] .stage{background:#00b140;color:#fff}
+.avatar{position:relative;width:min(34vmin,360px);aspect-ratio:1;border-radius:50%;background:#fdecec center/cover;display:grid;place-items:center;font-size:min(11vmin,120px);font-weight:700;color:var(--acc);box-shadow:0 0 0 10px rgba(208,0,0,.1),0 30px 60px -28px rgba(0,0,0,.45);animation:idle 5s ease-in-out infinite}
+[data-bg=dark] .avatar{background-color:#2b1618}
+.avatar::after{content:"";position:absolute;inset:-14px;border-radius:50%;border:2px solid var(--acc);opacity:0}
+.speaking .avatar::after{animation:ring 1.2s ease-out infinite}
+.ai{position:absolute;right:-6px;bottom:6px;background:var(--acc);color:#fff;font-size:clamp(11px,1.6vmin,16px);font-weight:600;border-radius:99px;padding:4px 12px;box-shadow:0 6px 16px -6px rgba(208,0,0,.6)}
+.bars{display:flex;gap:6px;height:7vmin;align-items:center;margin-top:3vmin;opacity:.25;transition:opacity .3s}.speaking .bars{opacity:1}
+.bars i{display:block;width:.9vmin;min-width:5px;height:20%;border-radius:99px;background:var(--acc)}
+.speaking .bars i{animation:bar .9s ease-in-out infinite}.bars i:nth-child(2n){animation-delay:.12s!important}.bars i:nth-child(3n){animation-delay:.24s!important}.bars i:nth-child(5n){animation-delay:.36s!important}
+.name{position:absolute;left:3vmin;bottom:3vmin;display:flex;flex-direction:column;gap:2px;padding:1.4vmin 2vmin;border-radius:14px;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);color:var(--ink);box-shadow:0 10px 30px -16px rgba(0,0,0,.4)}
+[data-bg=dark] .name{background:rgba(30,32,38,.82);color:#f2f2f4}
+.name b{font-size:clamp(14px,2.6vmin,28px)}.name span{font-size:clamp(11px,1.8vmin,18px);color:var(--mut)}
+.cap{position:absolute;left:50%;transform:translateX(-50%);bottom:12vmin;max-width:84%;text-align:center;font-size:clamp(16px,3.2vmin,36px);font-weight:560;line-height:1.3;padding:1vmin 2vmin;border-radius:14px;background:rgba(0,0,0,.62);color:#fff;opacity:0;transition:opacity .25s;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.cap.on{opacity:1}.nocap .cap{display:none}
+.rec{position:absolute;top:3vmin;right:3vmin;display:none;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.6);color:#fff;font-size:13px}.rec i{width:9px;height:9px;border-radius:50%;background:#ff3b3b;animation:blink 1s infinite}.listening .rec{display:flex}
+.dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,0);display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:94vw;padding:10px;border-radius:18px;background:rgba(20,21,24,.86);backdrop-filter:blur(14px);box-shadow:0 20px 50px -20px rgba(0,0,0,.6);transition:opacity .3s,transform .3s;z-index:10}
+.hide-ui .dock{opacity:0;transform:translate(-50%,24px);pointer-events:none}.hide-ui{cursor:none}
+.dock button,.dock select,.dock input{font:inherit;font-size:14px;border-radius:11px;border:1px solid #34363c;background:#202228;color:#f2f2f4;padding:8px 13px}
+.dock button{cursor:pointer;transition:background .15s,transform .1s}.dock button:hover{background:#2c2f37}.dock button:active{transform:scale(.97)}.dock button.pri{background:var(--acc);border-color:var(--acc)}.dock button.on{background:#fff;color:#111}
+.dock input{min-width:220px}.dock button:focus-visible,.dock input:focus,.dock select:focus{outline:2px solid #ff7a7a;outline-offset:1px}
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);background:var(--card);color:var(--ink);transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1);z-index:20;overflow:auto;padding:22px;box-shadow:-30px 0 60px -30px rgba(0,0,0,.5)}.panel.open{transform:none}
+.panel h2{margin:0 0 4px;font-size:20px}.panel h3{font-size:14px;margin:16px 0 4px}.panel ol{padding-left:20px;margin:4px 0}.panel li{margin:4px 0}.panel .x{position:absolute;top:14px;right:14px;border:0;background:#f3f1ed;border-radius:10px;padding:6px 11px;cursor:pointer}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.tabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 14px;cursor:pointer;font:inherit}.tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.chk{display:flex;gap:8px;align-items:center;font-size:13px;margin:3px 0}.chk i{width:9px;height:9px;border-radius:50%;background:#ccc}.chk.ok i{background:#1d7a3d}.chk.no i{background:#b3261e}.note{font-size:12.5px;color:var(--mut)}
+@keyframes idle{50%{transform:translateY(-6px) scale(1.012)}}@keyframes ring{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.28)}}
+@keyframes bar{0%,100%{height:18%}50%{height:100%}}@keyframes blink{50%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head>
+<body data-bg="light"><div class="frame"><div class="stage" id="stage"><div class="avatar" id="av"><span id="ini">ИИ</span><span class="ai">ИИ-помощник</span></div>
+<div class="bars" id="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="name"><b id="nm">Аватар</b><span id="pos">ИИ-помощник руководителя</span></div><div class="cap" id="cap" aria-live="polite"></div><div class="rec"><i></i>слушаю</div></div></div>
+<div class="dock" id="dock"><button class="pri" id="b-start">Начать встречу</button><button id="b-mic" title="Голос (клавиша M)">Говорить</button><input id="q" placeholder="Вопрос участника, Enter" aria-label="Вопрос участника"><button id="b-end">Завершить</button>
+<select id="s-bg" aria-label="Фон"><option value="light">Светлый фон</option><option value="dark">Тёмный фон</option><option value="green">Зелёный (хромакей)</option></select>
+<select id="s-size" aria-label="Размер кадра"><option value="">Во всё окно</option><option value="1280x720">1280×720</option><option value="1920x1080">1920×1080</option></select>
+<button id="b-cap" class="on" title="Субтитры (C)">Субтитры</button><button id="b-voice" class="on" title="Озвучка">Голос</button><button id="b-help" title="Подключение к платформе (H)">Подключение</button><button id="b-full" title="Во весь экран (F)">Экран</button></div>
+<aside class="panel" id="panel"><button class="x" id="p-x">Закрыть</button><h2>Подключение к видеозвонку</h2><p class="note">Откройте эту сцену в Chrome. Дальше два пути: показать вкладку со звуком или вывести её через виртуальную камеру.</p><div class="tabs" id="tabs"></div><div id="pbody"></div><h3>Проверка браузера</h3><div id="chk"></div><button id="b-test" style="margin-top:10px;padding:8px 14px;border-radius:10px;border:1px solid #d9d6cf;background:#fff;cursor:pointer">Проверить звук</button></aside>
+<script src="/static/platforms.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),qs=new URLSearchParams(location.search);
+const st={pid:qs.get('pid')||'ivan',today:qs.get('today')||'2026-12-07',plat:qs.get('platform')||localStorage.getItem('av-plat')||'mts',voice:true,caps:true,busy:false,rate:1,idle:0};
+const api=async(p,o={})=>{const k=sessionStorage.getItem('av-admin');const r=await fetch('/api'+p,{headers:{'Content-Type':'application/json',...(k?{'X-Admin-Key':k}:{})},...o,body:o.body?JSON.stringify(o.body):undefined});if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||r.statusText);return r.json()};
+const q=p=>`/${st.pid}${p}${p.includes('?')?'&':'?'}today=${st.today}`;
+const stage=$('#stage'),cap=$('#cap');let capT=null;
+const say=txt=>{cap.textContent=txt;if(st.caps)cap.classList.add('on');clearTimeout(capT);capT=setTimeout(()=>cap.classList.remove('on'),Math.max(3500,txt.length*70))};
+function voice(){const v=speechSynthesis.getVoices();return v.find(x=>/^ru/i.test(x.lang)&&/(Milena|Yuri|Pavel|Irina|Google|Microsoft)/i.test(x.name))||v.find(x=>/^ru/i.test(x.lang))||null}
+function speak(t){return new Promise(res=>{say(t);if(!st.voice||!window.speechSynthesis){setTimeout(res,Math.min(4500,t.length*45));return}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ru-RU';u.rate=st.rate;const v=voice();if(v)u.voice=v;
+  const on=()=>document.body.classList.add('speaking'),off=()=>{document.body.classList.remove('speaking');res()};u.onstart=on;u.onend=u.onerror=off;speechSynthesis.speak(u)})}
+async function ask(t){t=t.trim();if(!t||st.busy)return;st.busy=true;say('Вопрос: '+t);try{const a=await api(q('/meeting/say'),{method:'POST',body:{text:t}});await speak(a.text)}catch(e){await speak('Не удалось получить ответ: '+e.message)}st.busy=false}
+$('#q').onkeydown=e=>{if(e.key==='Enter'){const v=e.target.value;e.target.value='';ask(v)}};
+let rec=null;function mic(){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){say('Распознавание речи недоступно в этом браузере. Введите вопрос текстом.');return}
+  if(rec){rec.stop();return}rec=new R();rec.lang='ru-RU';rec.onstart=()=>document.body.classList.add('listening');rec.onend=()=>{document.body.classList.remove('listening');rec=null;$('#b-mic').classList.remove('on')};
+  rec.onresult=e=>ask(e.results[0][0].transcript);rec.onerror=()=>{};$('#b-mic').classList.add('on');rec.start()}
+async function start(){if(st.busy)return;st.busy=true;try{const s=await api(q('/meeting/script?platform='+st.plat));await speak(s.intro);for(const x of s.questions.slice(0,3)){await speak(x);await new Promise(r=>setTimeout(r,1500))}}catch(e){say(e.message)}st.busy=false}
+async function end(){if(st.busy)return;st.busy=true;try{const s=await api(q('/meeting/script'));await speak(s.outro)}catch(e){say(e.message)}st.busy=false}
+$('#b-start').onclick=start;$('#b-mic').onclick=mic;$('#b-end').onclick=end;
+$('#b-cap').onclick=e=>{st.caps=!st.caps;e.target.classList.toggle('on',st.caps);document.body.classList.toggle('nocap',!st.caps)};
+$('#b-voice').onclick=e=>{st.voice=!st.voice;e.target.classList.toggle('on',st.voice);if(!st.voice)speechSynthesis.cancel()};
+$('#b-full').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});
+const bgs=['light','dark','green'];const setBg=v=>{document.body.dataset.bg=v;$('#s-bg').value=v;localStorage.setItem('av-bg',v)};$('#s-bg').onchange=e=>setBg(e.target.value);setBg(qs.get('bg')||localStorage.getItem('av-bg')||'light');
+const setSize=v=>{if(v){const[w,h]=v.split('x');stage.classList.add('fixed');stage.style.setProperty('--w',w+'px');stage.style.setProperty('--h',h+'px')}else stage.classList.remove('fixed');$('#s-size').value=v};$('#s-size').onchange=e=>setSize(e.target.value);setSize(qs.get('size')||'');
+/* панель подключения */
+const P_=window.AV_PLATFORMS||{};const tabs=$('#tabs');
+const draw=()=>{tabs.innerHTML=Object.keys(P_).map(k=>`<button data-k="${k}" class="${k===st.plat?'on':''}">${P_[k].name}</button>`).join('');$('#pbody').innerHTML=window.AV_PLATFORM_TEXT?window.AV_PLATFORM_TEXT(st.plat):''};
+tabs.onclick=e=>{const b=e.target.closest('button');if(!b)return;st.plat=b.dataset.k;localStorage.setItem('av-plat',st.plat);draw()};draw();
+async function check(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,md=navigator.mediaDevices;let srv=false;try{srv=(await fetch('/api/status')).ok}catch{}
+  const rows=[['Озвучка ответов',!!window.speechSynthesis],['Русский голос найден',!!(window.speechSynthesis&&voice())],['Голосовой ввод',!!R],['Показ вкладки (getDisplayMedia)',!!(md&&md.getDisplayMedia)],['Сервер аватара отвечает',srv]];
+  $('#chk').innerHTML=rows.map(r=>`<div class="chk ${r[1]?'ok':'no'}"><i></i>${r[0]}</div>`).join('')}
+$('#b-help').onclick=()=>{$('#panel').classList.add('open');check()};$('#p-x').onclick=()=>$('#panel').classList.remove('open');
+$('#b-test').onclick=()=>speak('Проверка звука. Меня слышно? Я ИИ-помощник руководителя.');
+if(window.speechSynthesis)speechSynthesis.onvoiceschanged=()=>check();
+/* профиль, фото, автоскрытие панели */
+(async()=>{try{const r=await api('/profiles');if(!qs.get('today'))st.today=r.demo_today;const p=r.profiles.find(x=>x.id===st.pid)||r.profiles[0];if(p){$('#nm').textContent=p.name;$('#pos').textContent='ИИ-помощник · '+(p.position||'руководитель');$('#ini').textContent=p.name.split(' ').map(x=>x[0]).join('').slice(0,2);document.title='Аватар · '+p.name}
+  const ph=await api(`/${st.pid}/avatar-photo`);if(ph.data_url){$('#av').style.backgroundImage=`url(${ph.data_url})`;$('#ini').textContent=''}}catch(e){say('Сервер недоступен: '+e.message)}})();
+const wake=()=>{document.body.classList.remove('hide-ui');clearTimeout(st.idle);st.idle=setTimeout(()=>{if(document.activeElement!==$('#q')&&!$('#panel').classList.contains('open'))document.body.classList.add('hide-ui')},3500)};
+['mousemove','keydown','touchstart'].forEach(ev=>addEventListener(ev,wake));wake();
+addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;const k=e.key.toLowerCase();if(k==='m')mic();else if(k==='f')$('#b-full').click();else if(k==='c')$('#b-cap').click();else if(k==='h')$('#b-help').click();else if(k==='b')setBg(bgs[(bgs.indexOf(document.body.dataset.bg)+1)%3]);else if(k==='s')start()});
+})();
+</script></body></html>
